@@ -35,8 +35,7 @@ void DoubleLinkedList::addNode() {
 	cout << "\nEnter the roll number of the student: ";
 	cin >> nim;
 	cout << "\nEnter the name of the student: ";
-	cin.ignore();
-	getline(cin, nm);
+	cin >> nm;
 	Node* newNode = new Node(); //step 1
 	newNode->noMhs = nim; //step 2
 	newNode->name = nm; //step 2
@@ -77,9 +76,9 @@ void DoubleLinkedList::addNode() {
 }
 
 bool  DoubleLinkedList::search(int rollNo, Node** previous, Node** current) {
-	*previous = START; //step 1.a 
+	*previous = NULL; //step 1.a 
 	*current = START; // step 1.b
-	while (*current != NULL && rollNo != (*current)->noMhs) { //step 1.c
+	while (*current != NULL && (*current)->noMhs != rollNo) { //step 1.c
 		*previous = *current; //step 1.d
 		*current = (*current)->next; //step 1.e
 	}
@@ -91,13 +90,12 @@ bool DoubleLinkedList::deleteNode(int rollNo) {
 	previous = current = NULL;
 	if (search(rollNo, &previous, &current) == false)
 		return false;
-	if (current->next != NULL)
-		current->next->prev = previous; //step 2
 	if (previous != NULL)
 		previous->next = current->next; //step 3
 	else
 		START = current->next;
-
+	if (current->next != NULL)
+		current->next->prev = previous; //step 2
 	delete current; //step 4
 	return true;
 }
